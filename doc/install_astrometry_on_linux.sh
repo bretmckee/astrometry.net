@@ -1,6 +1,7 @@
 #!/bin/sh
 
-WORKSPACE_DIR="/tmp"
+#WORKSPACE_DIR="/tmp"
+WORKSPACE_DIR="."
 
 # basic linux install/build libs, python, and other support
 cd $WORKSPACE_DIR && \
@@ -9,16 +10,17 @@ apt install -y make build-essential python3 python3-pip netpbm libnetpbm10-dev z
 pip3 install numpy scipy fitsio && \
 
 # astrometry
-rm -f astrometry.net-latest.tar.gz* && \
-wget http://astrometry.net/downloads/astrometry.net-latest.tar.gz && \
-tar xvzf astrometry.net-latest.tar.gz && \
-cd astrometry.net-* && \
-make && \
+#rm -f astrometry.net-latest.tar.gz* && \
+#wget http://astrometry.net/downloads/astrometry.net-latest.tar.gz && \
+#tar xvzf astrometry.net-latest.tar.gz && \
+#cd astrometry.net-* && \
+make CFITS_INC="-I$WORKSPACE_DIR/cfitsio/include" CFITS_LIB="-L$WORKSPACE_DIR/cfitsio/lib -lcfitsio" && \
 make py && \
 make extra && \
 make install && \
+echo "some commands were removed by bret"
 
 # download and install index files
-rm -rf /usr/local/astrometry/data/* && \
-wget -r -nd -np -P /usr/local/astrometry/data/ "data.astrometry.net/4100/" && \
-wget -r -nd -np -P /usr/local/astrometry/data/ "data.astrometry.net/5000/"
+#rm -rf /usr/local/astrometry/data/* && \
+#wget -r -nd -np -P /usr/local/astrometry/data/ "data.astrometry.net/4100/" && \
+#wget -r -nd -np -P /usr/local/astrometry/data/ "data.astrometry.net/5000/"
